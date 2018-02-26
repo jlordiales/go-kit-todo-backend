@@ -71,7 +71,7 @@
 			"revisionTime": "2018-02-02T15:35:43Z"
 		}
 	],
-	"rootPath": "github.com/jlordiales/go-kit-todo-backend"
+	"rootPath": "github.com/jlordiales/go-kit-todo-backend",
 	"heroku": {
 		"install": ["./cmd/..."]
 	}

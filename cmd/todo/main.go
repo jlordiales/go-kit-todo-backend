@@ -51,7 +51,10 @@ func main() {
 	var handler http.Handler
 	{
 		handler = todohttp.MakeHandler(log.With(logger, "handler", "HTTP"), endpoints)
-		handler = handlers.CORS(handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD"}), handlers.AllowedOrigins([]string{"*"}))(handler)
+		handler = handlers.CORS(
+			handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD"}),
+			handlers.AllowedOrigins([]string{"*"}),
+			handlers.AllowedHeaders([]string{"Content-Type"}))(handler)
 	}
 
 	srv := &http.Server{

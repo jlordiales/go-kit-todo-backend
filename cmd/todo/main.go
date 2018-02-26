@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -17,10 +16,23 @@ import (
 	"github.com/jlordiales/go-kit-todo-backend/pkg/service/inmemory"
 )
 
+func port() string {
+	if port, ok := os.LookupEnv("PORT"); ok {
+		return ":" + port
+	}
+	return ":8080"
+}
+
+func basePath() string {
+	if basePath, ok := os.LookupEnv("BASE_PATH"); ok {
+		return basePath
+	}
+	return "http://localhost:8080"
+}
+
 func main() {
-	addr := flag.String("PORT", ":8080", "HTTP listen address")
-	basePath := flag.String("base_path", "http://localhost", "Base url for requests")
-	flag.Parse()
+	addr := port()
+	basePath := basePath()
 
 	var logger log.Logger
 	{
@@ -34,7 +46,7 @@ func main() {
 		s = inmemory.NewService(logger)
 	}
 
-	endpoints := endpoints.New(s, fmt.Sprintf("%s%s", *basePath, *addr), logger)
+	endpoints := endpoints.New(s, basePath, logger)
 
 	var handler http.Handler
 	{
@@ -44,7 +56,7 @@ func main() {
 
 	srv := &http.Server{
 		Handler:      handler,
-		Addr:         *addr,
+		Addr:         addr,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
@@ -57,7 +69,7 @@ func main() {
 	}()
 
 	go func() {
-		logger.Log("transport", "HTTP", "addr", *addr)
+		logger.Log("transport", "HTTP", "addr", addr)
 		errs <- srv.ListenAndServe()
 	}()
 

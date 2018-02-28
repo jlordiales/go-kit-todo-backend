@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/go-kit/kit/endpoint"
-	"github.com/go-kit/kit/log"
 	"github.com/jlordiales/go-kit-todo-backend/pkg/service"
 	"github.com/satori/go.uuid"
 )
@@ -130,7 +129,7 @@ func makeDeleteTodoEndpoint(s service.Service) endpoint.Endpoint {
 	}
 }
 
-func New(s service.Service, basePath string, logger log.Logger) Endpoints {
+func New(s service.Service, basePath string) Endpoints {
 	var createEndpoint endpoint.Endpoint
 	{
 		createEndpoint = makeCreateTodoEndpoint(s, basePath)

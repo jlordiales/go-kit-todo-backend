@@ -46,7 +46,7 @@ func main() {
 		s = inmemory.NewService(logger)
 	}
 
-	endpoints := endpoints.New(s, basePath, logger)
+	endpoints := endpoints.New(s, basePath)
 
 	var handler http.Handler
 	{
